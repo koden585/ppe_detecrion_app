@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test PPE Detection API</title>
+</head>
+<body>
+    <h1>Test PPE Detection API</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="file">Select Image (jpg, jpeg, png):</label>
+        <input type="file" id="file" name="file" accept=".jpg,.jpeg,.png"><br><br>
+        <button type="submit">Send to API</button>
+    </form>
+    <pre id="response"></pre>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData();
+            const fileInput = document.getElementById('file');
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await fetch('http://localhost:5000/api/detect', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                document.getElementById('response').textContent = JSON.stringify(result, null, 2);
+            } catch (error) {
+                document.getElementById('response').textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>

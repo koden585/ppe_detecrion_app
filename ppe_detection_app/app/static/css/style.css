@@ -1,0 +1,19 @@
+/* Пользовательские стили для дополнения Bootstrap */
+body {
+    background-color: #f8f9fa;
+}
+
+h1, h2 {
+    color: #343a40;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    margin-top: 20px;
+    border: 1px solid #dee2e6;
+}

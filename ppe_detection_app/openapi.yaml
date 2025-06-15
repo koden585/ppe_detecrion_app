@@ -1,0 +1,69 @@
+# Документация REST-API в формате OpenAPI/Swagger
+
+openapi: 3.0.3
+info:
+  title: PPE Detection API
+  version: 1.0.0
+  description: API for detecting personal protective equipment (PPE) using YOLOv8
+paths:
+  /api/detect:
+    post:
+      summary: Detect PPE in an uploaded image
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Image file (jpg, jpeg, png)
+      responses:
+        '200':
+          description: Successful detection
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        person_id:
+                          type: integer
+                        person_confidence:
+                          type: number
+                        has_helmet:
+                          type: boolean
+                        helmet_confidence:
+                          type: number
+                        has_workwear:
+                          type: boolean
+                        workwear_confidence:
+                          type: number
+                        bounding_box:
+                          type: array
+                          items:
+                            type: integer
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

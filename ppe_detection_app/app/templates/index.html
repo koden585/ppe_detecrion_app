@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}PPE Detection - Upload Image{% endblock %}
+{% block content %}
+    <h1>Upload Image for PPE Detection</h1>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data" action="{{ url_for('web.upload_image') }}">
+        <div class="mb-3">
+            <label for="file" class="form-label">Select Image (jpg, jpeg, png)</label>
+            <input type="file" class="form-control" id="file" name="file" accept=".jpg,.jpeg,.png">
+        </div>
+        <button type="submit" class="btn btn-primary">Upload and Detect</button>
+    </form>
+    {% if results %}
+        <h2 class="mt-4">Detection Results</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Person ID</th>
+                    <th>Person Confidence</th>
+                    <th>Has Helmet</th>
+                    <th>Helmet Confidence</th>
+                    <th>Has Workwear</th>
+                    <th>Workwear Confidence</th>
+                    <th>Bounding Box</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    <tr>
+                        <td>{{ result.person_id }}</td>
+                        <td>{{ result.person_confidence | round(2) }}</td>
+                        <td>{{ result.has_helmet }}</td>
+                        <td>{{ result.helmet_confidence | round(2) }}</td>
+                        <td>{{ result.has_workwear }}</td>
+                        <td>{{ result.workwear_confidence | round(2) }}</td>
+                        <td>{{ result.bounding_box }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if image_url %}
+            <h2>Processed Image</h2>
+            <img src="{{ url_for('static', filename=image_url) }}" class="img-fluid" alt="Processed Image">
+        {% endif %}
+    {% endif %}
+{% endblock %}
